@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">FireChat</string>
+    <string name="welcome">Welcome!!</string>
+    <string name="login_to_continue">Login to Continue</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="add_image">Add Image</string>
+    <string name="name_hint">Name</string>
+    <string name="password_confirm_hint">Confirm Password</string>
+    <string name="already_have_a_account">Already have a account?</string>
+    <string name="title_activity_user_selection">UserSelection</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="select_user">Select User</string>
+    <string name="error_placeholder">Error now users found</string>
+    <string name="error_message">No User Available</string>
+    <string name="type_a_message">type a message</string>
+    <string name="new_chat">New Chat</string>
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "530197914153",
+    "project_id": "chatapp3-90aaf",
+    "storage_bucket": "chatapp3-90aaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530197914153:android:78962ad710e145f4a1b238",
+        "android_client_info": {
+          "package_name": "com.keeghan.firechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530197914153-a191k9pu4jook701bu266ae4vtr5hl45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_RULegjDzDOGGevK6DktxZcGGEj6rEUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530197914153-a191k9pu4jook701bu266ae4vtr5hl45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
