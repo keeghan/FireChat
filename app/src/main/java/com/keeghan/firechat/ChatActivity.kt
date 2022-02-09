@@ -19,8 +19,6 @@ import com.keeghan.firechat.util.Constants
 import com.keeghan.firechat.util.PreferenceManager
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var preferenceManager: PreferenceManager
@@ -36,6 +34,7 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        preferenceManager = PreferenceManager(applicationContext)
         intentUser = intent.extras?.get(Constants.KEY_USER_SINGLE) as User
         setListener()
         loadIntentUser()
@@ -45,11 +44,10 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setup() {
         messagesList = ArrayList()
-        preferenceManager = PreferenceManager(applicationContext)
         adapter = ChatAdapter(
             messagesList,
             getBitmapFromString(intentUser.image),
-            preferenceManager.getString(Constants.KEY_USER_ID)
+            preferenceManager.getString(Constants.KEY_USER_ID)!!
         )
         binding.chatRecycler.adapter = adapter
         database = FirebaseFirestore.getInstance()
@@ -70,27 +68,28 @@ class ChatActivity : AppCompatActivity() {
         binding.sendLayout.setOnClickListener { sendMessage() }
     }
 
+
     private fun listenForMessage() {
         database.collection(Constants.KEY_CHAT_DATA)
             .whereEqualTo(
-                Constants.KEY_SENDER_ID,
-                preferenceManager.getString(Constants.KEY_USER_ID)
+                Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID)
             )
             .whereEqualTo(Constants.KEY_RECEIVER_ID, intentUser.id)
             .addSnapshotListener(eventListener)
         database.collection(Constants.KEY_CHAT_DATA)
             .whereEqualTo(Constants.KEY_SENDER_ID, intentUser.id)
             .whereEqualTo(
-                Constants.KEY_RECEIVER_ID,
-                preferenceManager.getString(Constants.KEY_USER_ID)
+                Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.KEY_USER_ID)
             )
             .addSnapshotListener(eventListener)
     }
+
 
     private val eventListener: EventListener<QuerySnapshot> = EventListener { value, error ->
         if (error != null) {
             return@EventListener
         }
+
         if (value != null) {
             val count = messagesList.size
             for (docChange in value.documentChanges) {
@@ -98,7 +97,7 @@ class ChatActivity : AppCompatActivity() {
                     val message = Message()
                     message.senderID = docChange.document.getString(Constants.KEY_SENDER_ID)!!
                     message.receiverID = docChange.document.getString(Constants.KEY_RECEIVER_ID)!!
-                    message.message = docChange.document.getString(Constants.KEY_MESSAGE)!!
+                    message.message = docChange.document.getString(Constants.KEY_MESSAGE).toString()
                     message.dateTime =
                         convertDate(docChange.document.getDate(Constants.KEY_TIMESTAMP)!!)
                     message.dateObj = docChange.document.getDate(Constants.KEY_TIMESTAMP)!!
@@ -120,6 +119,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+
     private fun addConversation(conversation: HashMap<String, Any>) {
         database.collection(Constants.KEY_CONVERSATIONS)
             .add(conversation)
@@ -136,7 +136,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun sendMessage() {
         val message = HashMap<String, Any>()
-        message[Constants.KEY_SENDER_ID] = preferenceManager.getString(Constants.KEY_USER_ID)
+        message[Constants.KEY_SENDER_ID] = preferenceManager.getString(Constants.KEY_USER_ID)!!
         message[Constants.KEY_RECEIVER_ID] = intentUser.id
         message[Constants.KEY_MESSAGE] = binding.messageInput.text.toString()
         message[Constants.KEY_TIMESTAMP] = Date()
@@ -147,11 +147,11 @@ class ChatActivity : AppCompatActivity() {
             //formulate a new conversation using sender and receiver information
             val conversation: HashMap<String, Any> = HashMap()
             conversation[Constants.KEY_SENDER_ID] =
-                preferenceManager.getString(Constants.KEY_USER_ID)
+                preferenceManager.getString(Constants.KEY_USER_ID)!!
             conversation[Constants.KEY_SENDER_NAME] =
-                preferenceManager.getString(Constants.KEY_NAME)
+                preferenceManager.getString(Constants.KEY_NAME)!!
             conversation[Constants.KEY_SENDER_IMAGE] =
-                preferenceManager.getString(Constants.KEY_IMAGE)
+                preferenceManager.getString(Constants.KEY_IMAGE)!!
             conversation[Constants.KEY_RECEIVER_ID] = intentUser.id
             conversation[Constants.KEY_RECEIVER_NAME] = intentUser.name
             conversation[Constants.KEY_RECEIVER_IMAGE] = intentUser.image
@@ -169,12 +169,12 @@ class ChatActivity : AppCompatActivity() {
     private fun checkForConversation() {
         if (messagesList.size != 0) {
             checkForConversationRemotely(
-                preferenceManager.getString(Constants.KEY_USER_ID),
+                preferenceManager.getString(Constants.KEY_USER_ID)!!,
                 intentUser.id
             )
             checkForConversationRemotely(
                 intentUser.id,
-                preferenceManager.getString(Constants.KEY_USER_ID)
+                preferenceManager.getString(Constants.KEY_USER_ID)!!
             )
         }
     }

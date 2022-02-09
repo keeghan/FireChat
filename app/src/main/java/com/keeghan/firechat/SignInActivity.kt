@@ -2,7 +2,6 @@ package com.keeghan.firechat
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
@@ -63,11 +62,15 @@ class SignInActivity : AppCompatActivity() {
                         Constants.KEY_IMAGE,
                         documentSnapShot.getString(Constants.KEY_IMAGE)!!
                     )
+                    preferenceManager.putString(
+                        Constants.KEY_NAME,
+                        documentSnapShot.getString(Constants.KEY_NAME)!!
+                    )
                     val intent = Intent(applicationContext, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
-                   // Log.e("====", it.exception?.message!!)
+                    // Log.e("====", it.exception?.message!!)
                     setIsLoadingStatus(false)
                     showToast("Unable to Sign in")
                 }

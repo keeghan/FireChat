@@ -6,12 +6,14 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.keeghan.firechat.databinding.RecentChatItemBinding
+import com.keeghan.firechat.listeners.ConversationListener
 import com.keeghan.firechat.model.Message
+import com.keeghan.firechat.model.User
 
 class RecentConversationAdapter(
-    var messagesList: List<Message>
+    private var messagesList: List<Message>,
+    var conversationListener: ConversationListener
 ) : RecyclerView.Adapter<RecentConversationAdapter.ConversationViewHolder>() {
 
 
@@ -23,6 +25,13 @@ class RecentConversationAdapter(
             binding.userProfileImage.setImageBitmap(decodeImage(message.conversationImage))
             binding.userName.text = message.conversationUserName
             binding.recentMessage.text = message.message
+            binding.root.setOnClickListener {
+                val user = User()
+                user.id = message.conversationId
+                user.name = message.conversationUserName
+                user.image = message.conversationImage
+                conversationListener.onConversationClicked(user)
+            }
         }
     }
 

@@ -15,8 +15,8 @@ class PreferenceManager(context: Context) {
         sharedPreferences.edit().putString(key, value).apply()
     }
 
-    fun getString(key: String): String {
-        return sharedPreferences.getString(key, null)!!
+    fun getString(key: String): String? {
+        return sharedPreferences.getString(key, null)
     }
 
     fun clear() {
